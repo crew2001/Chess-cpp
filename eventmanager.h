@@ -20,20 +20,28 @@ private:
     int col;
     int PieceChosen;
     Board m_board;
-    vector<vector<int>> m_available;
-    array<array<int,8>,8> arrboard = Board::board;
+    vector<pair<int, int>> m_available;
+    array<array<int, 8>, 8> arrboard = Board::board;
 
 public:
-    EventManager(){};
+    EventManager() {};
 
 
     ~EventManager() = default;
-//    void HandleEvent(sf::Event& event,Board& board);
-void HandleEvent(sf::Event& event);
-void HandleEvent(sf::Event& event, vector<vector<int>>& gameMoves,const vector<int>& currentPiece);
-void GetMoves();
-vector<vector<int>> ReturnMoves(){return m_available;};
-void printMoves();
-vector<int> ReturnClickPos(){return {row,col};}
+
+    void HandleEvent(sf::Event &event);
+
+    void HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece);
+
+    void
+    HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece, bool check);
+
+    void GetMoves();
+
+    vector<pair<int, int>> ReturnMoves() { return m_available; };
+
+    pair<int, int> ReturnClickPos() { return {row, col}; }
+
+    void printBoard();
 };
 

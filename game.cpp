@@ -38,14 +38,17 @@ void Game::pollEvents() {
                 }else{
                     this->m_evman.HandleEvent(event, canMove,firstClick);
                     if (canMove.size()==2){
-                       Board::printBoard();
                        Board::makeMove(canMove[0],canMove[1]);
+                       Rules check_rule({canMove[1].first,canMove[1].second},Board::board);
+                       int pieceID = (Board::board)[canMove[1].first][canMove[1].second];
+                       if (abs(pieceID)==6){
+                           Board::moveKing(pieceID,canMove[1]);
+                       }
+                       bool isCheck = check_rule.KingCheck(pieceID,Board::board);
                        canMove.clear();
-                       firstClick.clear();
                        break;
                     } else{
                         canMove.clear();
-                        firstClick.clear();
                         break;
                     }
                 }
@@ -118,8 +121,8 @@ void Game::DrawPieces() {
 
 void Game::ShowMoves() {
     for (auto x : canMove){
-            float ypos = ((float)x[0])*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
-            float xpos = ((float)x[1])*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+            float ypos = ((float)x.first)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+            float xpos = ((float)x.second)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
             sf::CircleShape move(10.f);
             move.setFillColor(sf::Color::Cyan);
             move.setPosition(xpos,ypos);

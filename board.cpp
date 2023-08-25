@@ -18,3 +18,18 @@ void Board::makeMove(vector<int> start, vector<int> end) {
     board[end[0]][end[1]] = temp;
     board[start[0]][start[1]] = 0;
 }
+
+void Board::makeMove(pair<int, int> start, pair<int, int> end) {
+    int temp = board[start.first][start.second];
+    board[end.first][end.second]=temp;
+    board[start.first][start.second]=0;
+}
+
+void Board::moveKing(int kingSign, pair<int, int> newPosition) {
+    if (kingSign<0){
+        blackKing = newPosition;
+    }
+    else{
+        whiteKing = newPosition;
+    }
+}

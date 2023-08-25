@@ -11,6 +11,8 @@
 using namespace std;
 
 class Board {
+    static inline pair<int,int> whiteKing = {0,5};
+    static inline pair<int,int> blackKing = {7,5};
 public:
     Board() {};
 
@@ -22,8 +24,10 @@ public:
 
     static void printBoard();
 
-    static void makeMove(vector<int> start, vector<int> end);
+    static void makeMove(pair<int,int> start, pair<int,int> end);
 
+    static void makeMove(vector<int> start, vector<int> end);
+    static void moveKing(int kingSign,pair<int,int> newPosition);
     static inline array<array<int, 8>, 8> board = {
             {{4, 2, 3, 5, 6, 3, 2, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
              {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},

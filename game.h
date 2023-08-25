@@ -12,6 +12,7 @@
 #include <SFML/Window.hpp>
 #include "pieces.h"
 #include "eventmanager.h"
+#include "rules.h"
 using namespace std;
 class Game{
     public:
@@ -33,10 +34,9 @@ class Game{
     void MakeMove();
 
     private:
-    vector<vector<int>> canMove;
-    vector<int> firstClick;
+    vector<pair<int,int>> canMove;
+    pair<int,int> firstClick;
     sf::Event event;
-//    Pieces m_pieces;
     vector<sf::Texture> m_textures = Pieces::loadTextures();
     sf::RenderWindow* window;
     sf::VideoMode videoMode;
