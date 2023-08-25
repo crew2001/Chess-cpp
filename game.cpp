@@ -29,18 +29,40 @@ void Game::pollEvents() {
                 this->window->close();
                 break;
             case sf::Event::MouseButtonPressed:
-                this->m_evman.HandleEvent(event);
-            }
+                if (canMove.size()==0){
+                    this->m_evman.HandleEvent(event);
+                    this->m_evman.GetMoves();
+                    this->canMove = m_evman.ReturnMoves();
+                    this->firstClick = m_evman.ReturnClickPos();
+                    break;
+                }else{
+                    this->m_evman.HandleEvent(event, canMove,firstClick);
+                    if (canMove.size()==2){
+                       Board::printBoard();
+                       Board::makeMove(canMove[0],canMove[1]);
+                       canMove.clear();
+                       firstClick.clear();
+                       break;
+                    } else{
+                        canMove.clear();
+                        firstClick.clear();
+                        break;
+                    }
+                }
+
+
         }
     }
+}
+
+
 
 void Game::render() {
     this->window->clear();
-
 //    Render stuff here
     DrawBackground();
     DrawPieces();
-
+    ShowMoves();
 
     this->window->display();
 }
@@ -73,8 +95,8 @@ void Game::DrawBackground(){
 void Game::PiecesOnBoard() {
     for (int i=0;i<8;i++){
         for (int j=0;j<8;j++){
-            if ((m_board.getBoard())[i][j]!= 0){
-                int id = (m_board.getBoard())[i][j];
+            if ((Board::board)[i][j]!= 0){
+                int id = (Board::board)[i][j];
                 if (id < 0){
                     id = -id+6;
                 }
@@ -87,8 +109,20 @@ void Game::PiecesOnBoard() {
 }
 
 void Game::DrawPieces() {
+    sprites.clear();
     PiecesOnBoard();
     for (auto spr : sprites){
         Draw(spr);
+    }
+}
+
+void Game::ShowMoves() {
+    for (auto x : canMove){
+            float ypos = ((float)x[0])*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+            float xpos = ((float)x[1])*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+            sf::CircleShape move(10.f);
+            move.setFillColor(sf::Color::Cyan);
+            move.setPosition(xpos,ypos);
+            Draw(move);
     }
 }

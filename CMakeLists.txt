@@ -8,7 +8,8 @@ add_executable(chess_clion main.cpp
         game.cpp
         player.cpp
         pieces.cpp
-        eventmanager.cpp)
+        eventmanager.cpp
+        rules.cpp)
 
 find_package(SFML 2.6 COMPONENTS graphics window REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})

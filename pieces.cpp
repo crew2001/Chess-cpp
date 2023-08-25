@@ -14,11 +14,3 @@ vector<sf::Texture> Pieces::loadTextures()
     return texs;
 }
 
-//vector<sf::Texture> Pieces::textures {
-//    loadTextures();
-//}
-
-
-//Pieces::Pieces() {
-//    loadTextures();
-//}

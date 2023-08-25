@@ -9,20 +9,31 @@
 #include <vector>
 #include <array>
 #include "board.h"
+#include "rules.h"
 //#include "game.h"
 
 using namespace std;
 
 class EventManager {
 private:
-    int row,col,PieceChosen;
+    int row;
+    int col;
+    int PieceChosen;
     Board m_board;
+    vector<vector<int>> m_available;
+    array<array<int,8>,8> arrboard = Board::board;
 
 public:
     EventManager(){};
 
+
     ~EventManager() = default;
 //    void HandleEvent(sf::Event& event,Board& board);
 void HandleEvent(sf::Event& event);
+void HandleEvent(sf::Event& event, vector<vector<int>>& gameMoves,const vector<int>& currentPiece);
+void GetMoves();
+vector<vector<int>> ReturnMoves(){return m_available;};
+void printMoves();
+vector<int> ReturnClickPos(){return {row,col};}
 };
 

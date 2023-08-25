@@ -20,14 +20,11 @@ public:
 
     void setBoard(array<array<int, 8>, 8> newBoard) { board = newBoard; };
 
-    void printBoard();
+    static void printBoard();
 
-    void makeMove(vector<int> start, vector<int> end);
+    static void makeMove(vector<int> start, vector<int> end);
 
-public:
-
-private:
-    array<array<int, 8>, 8> board = {
+    static inline array<array<int, 8>, 8> board = {
             {{4, 2, 3, 5, 6, 3, 2, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
              {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
              {-4, -2, -3, -5, -6, -3, -2, -4}}};

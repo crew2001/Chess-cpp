@@ -29,9 +29,12 @@ class Game{
     void pollEvents();
     void DrawBackground();
     void Draw(sf::Drawable& l_drawable);
+    void ShowMoves();
+    void MakeMove();
 
     private:
-//    Player player;
+    vector<vector<int>> canMove;
+    vector<int> firstClick;
     sf::Event event;
 //    Pieces m_pieces;
     vector<sf::Texture> m_textures = Pieces::loadTextures();
@@ -40,6 +43,7 @@ class Game{
     EventManager m_evman;
     vector<sf::Sprite> sprites;
     Board m_board;
+    array<array<int,8>,8> arrboard = Board::board;
     bool endGame;
     void initVariables();
     void initWindow();
