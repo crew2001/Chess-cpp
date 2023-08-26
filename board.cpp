@@ -21,8 +21,12 @@ void Board::makeMove(vector<int> start, vector<int> end) {
 
 void Board::makeMove(pair<int, int> start, pair<int, int> end) {
     int temp = board[start.first][start.second];
+    if(abs(temp)==6){
+        moveKing(temp,end);
+    }
     board[end.first][end.second]=temp;
     board[start.first][start.second]=0;
+
 }
 
 void Board::moveKing(int kingSign, pair<int, int> newPosition) {
@@ -31,5 +35,14 @@ void Board::moveKing(int kingSign, pair<int, int> newPosition) {
     }
     else{
         whiteKing = newPosition;
+    }
+}
+
+pair<int,int> Board::findKing(int kingSign){
+    if (kingSign>0){
+        return whiteKing;
+    }
+    else{
+        return blackKing;
     }
 }

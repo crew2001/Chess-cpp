@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include <algorithm>
 #include <vector>
 #include "board.h"
 
@@ -32,9 +32,12 @@ public:
     void QueenMoves(const array<array<int,8>,8>& moveBoard);
     void KingMoves(const array<array<int,8>,8>& moveBoard);
 //    This king check will check if the king is in check from the most recent move
-    bool KingCheck(int npID,const array<array<int,8>,8>& currBoard);
+    static bool KingCheck(int npID,const array<array<int,8>,8>& currBoard);
 //    void simMove(pair<int,int> start, pair<int,int> end, array<array<int,8>,8>& cpyBoard);
-    bool CheckDiagonal(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
-    bool CheckLateral(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
 
+// CHECKS RETURN TRUE IF KING IS IN CHECK, FALSE IF SAFE
+    static bool CheckDiagonal(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
+    static bool CheckLateral(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
+    static bool CheckPawns(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos );
+    static bool CheckKnights(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos );
 };

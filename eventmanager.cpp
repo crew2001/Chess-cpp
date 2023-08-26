@@ -46,22 +46,7 @@ void EventManager::printBoard() {
     }
 }
 
-//TODO make this the event for when the king is in check
-void EventManager::HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece,bool check) {
-    int xpos = event.mouseButton.x;
-    int ypos = event.mouseButton.y;
-    row = (int) ((double) abs(ypos) * (8. / 1000.));
-    col = (int) ((double) abs(xpos) * (8. / 1000.));
-//    PieceChosen = (m_board.getBoard())[row][col];
-    pair<int, int> searchVect = {row, col};
-    if (find(gameMoves.begin(), gameMoves.end(), searchVect) != gameMoves.end()) {
-        gameMoves = {{currentPiece},
-                     {row, col}};
 
-    } else {
-        gameMoves = {{}};
-    }
-}
 
 
 

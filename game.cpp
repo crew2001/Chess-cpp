@@ -11,6 +11,7 @@ Game::Game() {
 
 void Game::initVariables() {
     this->endGame = false;
+    this->turn = 0;
 }
 
 void Game::initWindow() {
@@ -38,15 +39,16 @@ void Game::pollEvents() {
                 }else{
                     this->m_evman.HandleEvent(event, canMove,firstClick);
                     if (canMove.size()==2){
-                       Board::makeMove(canMove[0],canMove[1]);
-                       Rules check_rule({canMove[1].first,canMove[1].second},Board::board);
-                       int pieceID = (Board::board)[canMove[1].first][canMove[1].second];
-                       if (abs(pieceID)==6){
-                           Board::moveKing(pieceID,canMove[1]);
-                       }
-                       bool isCheck = check_rule.KingCheck(pieceID,Board::board);
-                       canMove.clear();
-                       break;
+                        Board::makeMove(canMove[0],canMove[1]);
+//                        int idMoved = Board::board[canMove[1].first][canMove[1].second];
+                        if (Rules::KingCheck(1,Board::board)){
+                            cout << "White king is in check!" << endl;
+                        }
+                        if (Rules::KingCheck(-1,Board::board)){
+                            cout << "Black king is in check!" << endl;
+                        }
+                        canMove.clear();
+                        break;
                     } else{
                         canMove.clear();
                         break;

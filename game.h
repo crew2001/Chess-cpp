@@ -34,6 +34,11 @@ class Game{
     void MakeMove();
 
     private:
+    int turn;
+//    true if white is in check
+    static bool whiteCheck;
+//  true if black is in check
+    static bool blackCheck;
     vector<pair<int,int>> canMove;
     pair<int,int> firstClick;
     sf::Event event;

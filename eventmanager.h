@@ -33,8 +33,6 @@ public:
 
     void HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece);
 
-    void
-    HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece, bool check);
 
     void GetMoves();
 
