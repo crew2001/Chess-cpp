@@ -20,19 +20,24 @@ private:
     int col;
     int PieceChosen;
     Board m_board;
+
     vector<pair<int, int>> m_available;
     array<array<int, 8>, 8> arrboard = Board::board;
 
 public:
     EventManager() {};
 
+    bool CorrectPiece;
 
     ~EventManager() = default;
 
-    void HandleEvent(sf::Event &event);
+    void HandleEvent(sf::Event &event,int turn);
 
     void HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece);
 
+    bool IsCorrect(){
+        return CorrectPiece;
+    };
 
     void GetMoves();
 

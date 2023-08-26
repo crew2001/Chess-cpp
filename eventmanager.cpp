@@ -5,13 +5,19 @@
 #include "eventmanager.h"
 
 
-void EventManager::HandleEvent(sf::Event &event) {
+void EventManager::HandleEvent(sf::Event &event, int turn) {
 //    x is col and y is row
     int xpos = event.mouseButton.x;
     int ypos = event.mouseButton.y;
     row = (int) ((double) abs(ypos) * (8. / 1000.));
     col = (int) ((double) abs(xpos) * (8. / 1000.));
     PieceChosen = (Board::board)[row][col];
+    if ((turn%2==0 && PieceChosen<0) || (turn%2==1 && PieceChosen>0)){
+        CorrectPiece = false;
+    }
+    else{
+        CorrectPiece = true;
+    }
 
 }
 
@@ -45,6 +51,7 @@ void EventManager::printBoard() {
         cout << endl;
     }
 }
+
 
 
 

@@ -31,15 +31,18 @@ void Game::pollEvents() {
                 break;
             case sf::Event::MouseButtonPressed:
                 if (canMove.size()==0){
-                    this->m_evman.HandleEvent(event);
-                    this->m_evman.GetMoves();
-                    this->canMove = m_evman.ReturnMoves();
-                    this->firstClick = m_evman.ReturnClickPos();
+                    this->m_evman.HandleEvent(event,turn);
+                    if (this->m_evman.IsCorrect()){
+                        this->m_evman.GetMoves();
+                        this->canMove = m_evman.ReturnMoves();
+                        this->firstClick = m_evman.ReturnClickPos();
+                    }
                     break;
                 }else{
                     this->m_evman.HandleEvent(event, canMove,firstClick);
                     if (canMove.size()==2){
                         Board::makeMove(canMove[0],canMove[1]);
+                        turn++;
 //                        int idMoved = Board::board[canMove[1].first][canMove[1].second];
                         if (Rules::KingCheck(1,Board::board)){
                             cout << "White king is in check!" << endl;
