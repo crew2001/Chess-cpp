@@ -78,11 +78,11 @@ void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard)
 
 void Rules::KnightMoves(const array<array<int,8>,8>& moveBoard)
 {
-    vector<vector<int>> perms = {{1, 2}, {2, 1}, {-1, 2}, {2, -1}, {-2, 1}, {1, -2}, {-2, -1}, {-1, -2}};
-    for (auto x : perms)
+    vector<pair<int,int>> perms = {{1, 2}, {2, 1}, {-1, 2}, {2, -1}, {-2, 1}, {1, -2}, {-2, -1}, {-1, -2}};
+    for (pair<int,int> x : perms)
     {
-        int newRow = row + x[0];
-        int newCol = col + x[1];
+        int newRow = row + x.first;
+        int newCol = col + x.second;
         if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
             continue;
         else
@@ -138,6 +138,25 @@ void Rules::KingMoves(const array<array<int,8>,8>& moveBoard)
             }
         }
     }
+    if(m_pieceID<0){
+        if( Board::blackCastle && moveBoard[7][2]==0 && moveBoard[7][1]==0 && moveBoard[7][0]==-4){
+            availableMoves.emplace_back(row,col-2);
+        }
+        if(Board::blackCastle && moveBoard[7][4]==0 && moveBoard[7][5]==0 && moveBoard[7][6]==0 && moveBoard[7][7]==-4){
+            availableMoves.emplace_back(row,col+2);
+        }
+    }
+    if(m_pieceID>0){
+//        KING SIDE CASTLE
+        if(Board::whiteCastle && moveBoard[0][2]==0 && moveBoard[0][1]==0 && moveBoard[0][0]==4){
+            availableMoves.emplace_back(row,col-2);
+        }
+//        QUEEN SIDE
+        if(Board::whiteCastle && moveBoard[0][4]==0 && moveBoard[0][5]==0 && moveBoard[0][6]==0 && moveBoard[0][7]==4){
+            availableMoves.emplace_back(row,col+2);
+        }
+    }
+
 }
 
 void Rules::DiagonalMoves(const array<array<int,8>,8>& moveBoard) {
@@ -269,13 +288,159 @@ bool Rules::CanMove(pair<int,int> start, pair<int,int> end){
     int temp = Board::board[start.first][start.second];
     int pieceSign = (temp<0) ? -1 : 1;
     int taken = Board::board[end.first][end.second];
+    array<array<int, 8>, 8> saveBoard = Board::board;
     Board::makeMove(start,end);
     if (KingCheck(pieceSign,Board::board)){
-        Board::UndoMove(end,start,taken);
+        Board::setBoard(saveBoard);
         return false;
     }
-    Board::UndoMove(end,start,taken);
+    Board::setBoard(saveBoard);
     return true;
 }
+
+
+void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves)
+{
+//    if white
+    if (m_pieceID > 0)
+    {
+        if ((moveBoard)[row+1][col]==0){
+            moves.emplace_back(row + 1, col);
+            if (row==1 && (moveBoard)[row+2][col]==0){
+                moves.emplace_back(row+2,col);
+            }
+        }
+        for (int i=-1;i<2;i+=2){
+            if ((moveBoard)[row+i*i][col+i]*(moveBoard)[row][col]<0){
+                moves.emplace_back(row+i*i,col+i);
+            }
+        }
+    } //else black
+    else
+    {
+        if ((moveBoard)[row-1][col]==0){
+            moves.emplace_back(row - 1, col);
+            if (row==6 && (moveBoard)[row-2][col]==0){
+                moves.emplace_back(row-2,col);
+            }
+        }
+        for (int i=-1;i<2;i+=2){
+            if ((moveBoard)[row-i*i][col-i]*(moveBoard)[row][col]<0){
+                moves.emplace_back(row-i*i,col-i);
+            }
+        }
+    }
+}
+
+void Rules::KnightMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves)
+{
+    vector<pair<int,int>> perms = {{1, 2}, {2, 1}, {-1, 2}, {2, -1}, {-2, 1}, {1, -2}, {-2, -1}, {-1, -2}};
+    for (pair<int,int> x : perms)
+    {
+        int newRow = row + x.first;
+        int newCol = col + x.second;
+        if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+            continue;
+        else
+        {
+            if ((moveBoard)[newRow][newCol] == 0)
+            {
+                moves.emplace_back(newRow, newCol);
+            }
+                // use fact that same colour will times to positive
+            else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0))
+            {
+                moves.emplace_back(newRow, newCol);
+            }
+            else
+                continue;
+        }
+    }
+}
+
+void Rules::BishopMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves) { DiagonalMoves(moveBoard,moves); }
+
+void Rules::RookMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves) { LateralMoves(moveBoard,moves); }
+
+void Rules::QueenMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves)
+{
+    LateralMoves(moveBoard,moves);
+    DiagonalMoves(moveBoard,moves);
+}
+
+void Rules::KingMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves)
+{
+    for (int i = -1; i < 2; i++)
+    {
+        for (int j = -1; j < 2; j++)
+        {
+            int newRow = row + i;
+            int newCol = col + j;
+            if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+                continue;
+            else
+            {
+                if ((moveBoard)[newRow][newCol] == 0)
+                {
+                    moves.emplace_back(newRow, newCol);
+                }
+                    // use fact that same colour will times to positive
+                else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0))
+                {
+                    moves.emplace_back(newRow, newCol);
+                }
+                else
+                    continue;
+            }
+        }
+    }
+}
+
+void Rules::DiagonalMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves) {
+    for (int i=-1;i<2;i+=2){
+        for (int j=-1;j<2;j+=2){
+            int k = 1;
+            while((row+k*i >= 0) && (row+k*i <8) && (col+k*j >= 0) && (col+k*j <8)){
+                if ((moveBoard)[row+i*k][col+j*k]==0){
+                    moves.emplace_back(row+i*k,col+j*k);
+                    k++;
+                } else if((moveBoard)[row+i*k][col+j*k]*(moveBoard)[row][col]<0){
+                    moves.emplace_back(row+i*k,col+j*k);
+                    break;
+                } else break;
+            }
+        }
+    }
+}
+
+void Rules::LateralMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves) {
+    for (int i=-1;i<2;i+=2){
+        int k=1;
+        while((col+k*i>=0) &&(col+k*i < 8)){
+            if ((moveBoard)[row][col+k*i]==0){
+                moves.emplace_back(row,col+k*i);
+                k++;
+            }
+            else if ((moveBoard)[row][col]*(moveBoard)[row][col+k*i]<0){
+                moves.emplace_back(row,col+k*i);
+                break;
+            } else break;
+        }
+        k=1;
+        while((row+k*i>=0) &&(row+k*i < 8)){
+            if ((moveBoard)[row+k*i][col]==0){
+                moves.emplace_back(row+k*i,col);
+                k++;
+            }
+            else if ((moveBoard)[row][col]*(moveBoard)[row+k*i][col]<0){
+                moves.emplace_back(row+k*i,col);
+                break;
+            } else break;
+        }
+    }
+}
+
+
+
 
 

@@ -10,11 +10,12 @@
 #include <array>
 #include "board.h"
 #include "rules.h"
-//#include "game.h"
+// #include "game.h"
 
 using namespace std;
 
-class EventManager {
+class EventManager
+{
 private:
     int row;
     int col;
@@ -25,17 +26,18 @@ private:
     array<array<int, 8>, 8> arrboard = Board::board;
 
 public:
-    EventManager() {};
+    EventManager(){};
 
     bool CorrectPiece;
 
     ~EventManager() = default;
 
-    void HandleEvent(sf::Event &event,int turn);
+    void HandleEvent(sf::Event &event, int turn);
 
     void HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, const pair<int, int> &currentPiece);
 
-    bool IsCorrect(){
+    bool IsCorrect()
+    {
         return CorrectPiece;
     };
 
@@ -46,5 +48,6 @@ public:
     pair<int, int> ReturnClickPos() { return {row, col}; }
 
     void printBoard();
-};
 
+    bool CheckMate();
+};

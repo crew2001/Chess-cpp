@@ -57,7 +57,28 @@ void EventManager::printBoard() {
     }
 }
 
+bool EventManager::CheckMate(){
+    // * CHECK IF THE LAST PIECE WAS PAWN OR KNIGHT 
+    // * IF SO THEN KING HAS TO MOVE/ATTACKING PIECE NEEDS TO BE TAKEN
+    int attacking = Board::lastPiece;
+    pair<int,int> kingUnderAttack = (attacking<0) ? Board::findKing(1) : Board::findKing(-1);
+    Rules kings(Board::board[kingUnderAttack.first][kingUnderAttack.second],kingUnderAttack.first,kingUnderAttack.second);
+    if (!(kings.GetMoves().empty())) return false;
+    vector<pair<int,int>> piecesOnBoard;
+    for (int i =0;i<8;i++){
+        for (int j=0;j<8;j++){
+            if (Board::board[i][j]*attacking<0){
+                piecesOnBoard.emplace_back(i,j);
+            }
+        }
+    }
+    for(pair<int,int> protector : piecesOnBoard){
+        Rules possibles(Board::board[protector.first][protector.second],protector.first,protector.second);
+        if (!(possibles.GetMoves().empty())) return false;
+    }
+    return true;
 
+}
 
 
 

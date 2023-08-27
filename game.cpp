@@ -44,10 +44,14 @@ void Game::pollEvents() {
                         Board::makeMove(canMove[0],canMove[1]);
                         turn++;
                         if (Rules::KingCheck(1,Board::board)){
-                            cout << "White king is in check!" << endl;
+                            if(this->m_evman.CheckMate()){
+                                cout << "CHECKMATE" <<endl;
+                            }
                         }
                         if (Rules::KingCheck(-1,Board::board)){
-                            cout << "Black king is in check!" << endl;
+                            if(this->m_evman.CheckMate()){
+                                cout << "CHECKMATE" <<endl;
+                            }
                         }
                         canMove.clear();
                         break;

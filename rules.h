@@ -30,6 +30,18 @@ public:
     void RookMoves(const array<array<int,8>,8>& moveBoard);
     void QueenMoves(const array<array<int,8>,8>& moveBoard);
     void KingMoves(const array<array<int,8>,8>& moveBoard);
+
+    void DiagonalMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void LateralMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void PawnMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void KnightMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void BishopMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void RookMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void QueenMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+    void KingMoves(const array<array<int,8>,8>& moveBoard, vector<pair<int,int>>& moves);
+
+//    static vector<pair<int,int>> GetPieceMoves(pair<int,int> piecePos);
+
     static bool KingCheck(int npID,const array<array<int,8>,8>& currBoard);
 
 // CHECKS RETURN TRUE IF KING IS IN CHECK, FALSE IF SAFE
@@ -41,4 +53,6 @@ public:
 //  CHECK IF THE MOVE MADE PUTS YOUR OWN KING IN CHECK
     static bool CanMove(pair<int,int> start, pair<int,int> end);
 
+//    CHECKMATE
+//    bool CheckMate(int sideSign);
 };
