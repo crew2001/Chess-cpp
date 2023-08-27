@@ -43,7 +43,6 @@ void Game::pollEvents() {
                     if (canMove.size()==2){
                         Board::makeMove(canMove[0],canMove[1]);
                         turn++;
-//                        int idMoved = Board::board[canMove[1].first][canMove[1].second];
                         if (Rules::KingCheck(1,Board::board)){
                             cout << "White king is in check!" << endl;
                         }
@@ -126,11 +125,15 @@ void Game::DrawPieces() {
 
 void Game::ShowMoves() {
     for (auto x : canMove){
+        if (Rules::CanMove(firstClick,x)){
             float ypos = ((float)x.first)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
             float xpos = ((float)x.second)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
             sf::CircleShape move(10.f);
             move.setFillColor(sf::Color::Cyan);
             move.setPosition(xpos,ypos);
             Draw(move);
+        }
+        // else continue;
     }
 }
+

@@ -30,9 +30,14 @@ EventManager::HandleEvent(sf::Event &event, vector<pair<int, int>> &gameMoves, c
 //    PieceChosen = (m_board.getBoard())[row][col];
     pair<int, int> searchVect = {row, col};
     if (find(gameMoves.begin(), gameMoves.end(), searchVect) != gameMoves.end()) {
-        gameMoves = {{currentPiece},
-                     {row, col}};
-    } else {
+        if (Rules::CanMove(currentPiece,{row,col})){
+            gameMoves = {{currentPiece},{row, col}};
+        }
+        else{
+            gameMoves = {{}};
+        }
+    } 
+    else {
         gameMoves = {{}};
     }
 }

@@ -46,3 +46,12 @@ pair<int,int> Board::findKing(int kingSign){
         return blackKing;
     }
 }
+
+void Board::UndoMove(pair<int, int> newPosition, pair<int, int> oldPosition, int taken) {
+    int temp = board[newPosition.first][newPosition.second];
+    board[newPosition.first][newPosition.second] = taken;
+    board[oldPosition.first][oldPosition.second] = temp;
+}
+
+
+

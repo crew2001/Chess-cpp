@@ -1,21 +1,19 @@
 #include "rules.h"
 #include <vector>
 
-Rules::Rules(int in_pieceID, int in_row, int in_col)
+Rules::Rules(int in_pieceID, int in_row, int in_col) : row(in_row),col(in_col),m_pieceID(in_pieceID)
 {
-    this->Setup(in_pieceID, in_row, in_col,Board::board);
+    this->Setup(Board::board);
 //    this->GetMoves();
 }
 
-Rules::Rules(pair<int,int> newPiece, const array<array<int,8>,8>& currBoard){
-    this->Setup(currBoard[newPiece.first][newPiece.second],newPiece.first,newPiece.second,currBoard);
-}
+//Rules::Rules(pair<int,int> newPiece, const array<array<int,8>,8>& currBoard){
+//    this->Setup(currBoard[newPiece.first][newPiece.second],newPiece.first,newPiece.second,currBoard);
+//}
 
-void Rules::Setup(int in_pieceID,int in_row,int in_col, const array<array<int,8>,8>& moveBoard)
+void Rules::Setup(const array<array<int,8>,8>& moveBoard)
 {
-    row = in_row;
-    col = in_col;
-    m_pieceID = in_pieceID;
+
     switch (abs(m_pieceID))
     {
         case 1:
@@ -33,6 +31,16 @@ void Rules::Setup(int in_pieceID,int in_row,int in_col, const array<array<int,8>
         default:
             return;
     }
+}
+
+vector<pair<int,int>> Rules::GetMoves(){
+    vector<pair<int,int>> returnMoves;
+    for (pair<int,int> x : availableMoves){
+        if (CanMove({row,col},x)){
+            returnMoves.emplace_back(x);
+        }
+    }
+    return returnMoves;
 }
 
 void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard)
@@ -221,6 +229,7 @@ bool Rules::CheckLateral(const array<array<int, 8>, 8> &currBoard, int kingSign,
                 return true;
             } else break;
         }
+        k=1;
 //        searches along the column
         while((kingPos.first+k*i>=0) &&(kingPos.first+k*i < 8)){
             int piece = currBoard[kingPos.first+k*i][kingPos.second];
@@ -246,7 +255,7 @@ bool Rules::CheckPawns(const array<array<int, 8>, 8> &currBoard, int kingSign, p
 bool Rules::CheckKnights(const array<array<int, 8>, 8> &currBoard, int kingSign, pair<int, int> kingPos) {
     vector<pair<int,int>> perms = {{1, 2}, {2, 1}, {-1, 2}, {2, -1}, {-2, 1}, {1, -2}, {-2, -1}, {-1, -2}};
     int target = kingSign*-2;
-    for (auto x : perms){
+    for (pair<int,int> x : perms){
         int rowKnight = kingPos.first + x.first;
         int colKinght = kingPos.second + x.second;
         if (rowKnight<8 && rowKnight>=0 && colKinght<8 && colKinght>=0 && currBoard[rowKnight][colKinght]==target){
@@ -256,6 +265,17 @@ bool Rules::CheckKnights(const array<array<int, 8>, 8> &currBoard, int kingSign,
     return false;
 }
 
-
+bool Rules::CanMove(pair<int,int> start, pair<int,int> end){
+    int temp = Board::board[start.first][start.second];
+    int pieceSign = (temp<0) ? -1 : 1;
+    int taken = Board::board[end.first][end.second];
+    Board::makeMove(start,end);
+    if (KingCheck(pieceSign,Board::board)){
+        Board::UndoMove(end,start,taken);
+        return false;
+    }
+    Board::UndoMove(end,start,taken);
+    return true;
+}
 
 
