@@ -42,6 +42,17 @@ void Game::pollEvents() {
                     this->m_evman.HandleEvent(event, canMove,firstClick);
                     if (canMove.size()==2){
                         Board::makeMove(canMove[0],canMove[1]);
+                        if (Rules::enPassente && abs(Board::board[canMove[1].first][canMove[1].second])==1){
+                            if (canMove[1].first == 2){
+                                Board::board[3][canMove[1].second]=0;
+                                // Board::printBoard();
+                            }
+                            else if (canMove[1].first==5){
+                                Board::board[4][canMove[1].second]=0;
+                                // Board::printBoard();
+                            }
+                        }
+                        Rules::enPassente = false;
                         turn++;
                         if (Rules::KingCheck(1,Board::board)){
                             if(this->m_evman.CheckMate()){

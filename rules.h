@@ -43,7 +43,7 @@ public:
 //    static vector<pair<int,int>> GetPieceMoves(pair<int,int> piecePos);
 
     static bool KingCheck(int npID,const array<array<int,8>,8>& currBoard);
-
+    static bool KingCheck(int npID,const array<array<int,8>,8>& currBoard,pair<int,int> kingPosition);
 // CHECKS RETURN TRUE IF KING IS IN CHECK, FALSE IF SAFE
     static bool CheckDiagonal(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
     static bool CheckLateral(const array<array<int,8>,8>& currBoard,int kingSign, pair<int,int> kingPos);
@@ -52,7 +52,7 @@ public:
 
 //  CHECK IF THE MOVE MADE PUTS YOUR OWN KING IN CHECK
     static bool CanMove(pair<int,int> start, pair<int,int> end);
-
+    static inline bool enPassente = false;
 //    CHECKMATE
 //    bool CheckMate(int sideSign);
 };

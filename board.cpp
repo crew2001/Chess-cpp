@@ -42,8 +42,17 @@ void Board::makeMove(pair<int, int> start, pair<int, int> end) {
                 }
             }
     }
+    // * ADDING PAWN TO QUEEN AT END
+    if ((temp==1 && end.first==7)){
+        temp = 5;
+    }
+    if (temp==-1 && end.first==0){
+        temp = -5;
+    }
     board[end.first][end.second]=temp;
     board[start.first][start.second]=0;
+    lastMove = end;
+    lastPiece=temp;
 
 }
 

@@ -46,6 +46,7 @@ vector<pair<int,int>> Rules::GetMoves(){
 void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard)
 {
 //    if white
+cout << Board::lastMove.first << " , " << Board::lastMove.second << endl;
     if (m_pieceID > 0)
     {
         if ((moveBoard)[row+1][col]==0){
@@ -58,6 +59,10 @@ void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard)
             if ((moveBoard)[row+i*i][col+i]*(moveBoard)[row][col]<0){
                 availableMoves.emplace_back(row+i*i,col+i);
             }
+        }
+        if(row==4 && Board::lastMove.first==4 && ((Board::lastMove.second ==col+1) || (Board::lastMove.second ==col-1))){
+            availableMoves.emplace_back(Board::lastMove.first+1,Board::lastMove.second);
+            enPassente = true;
         }
     } //else black
     else
@@ -72,6 +77,10 @@ void Rules::PawnMoves(const array<array<int,8>,8>& moveBoard)
             if ((moveBoard)[row-i*i][col-i]*(moveBoard)[row][col]<0){
                 availableMoves.emplace_back(row-i*i,col-i);
             }
+        }
+        if(row==3 && Board::lastMove.first==row && ((Board::lastMove.second ==col+1) || (Board::lastMove.second ==col-1))){
+            availableMoves.emplace_back(Board::lastMove.first-1,Board::lastMove.second);
+            enPassente=true;
         }
     }
 }
@@ -140,20 +149,30 @@ void Rules::KingMoves(const array<array<int,8>,8>& moveBoard)
     }
     if(m_pieceID<0){
         if( Board::blackCastle && moveBoard[7][2]==0 && moveBoard[7][1]==0 && moveBoard[7][0]==-4){
-            availableMoves.emplace_back(row,col-2);
+            if (!(KingCheck(-1,moveBoard,{7,1})) && !(KingCheck(-1,moveBoard,{7,2})) && !(KingCheck(-1,moveBoard,{7,3}))){
+                availableMoves.emplace_back(row,col-2);
+            }
         }
-        if(Board::blackCastle && moveBoard[7][4]==0 && moveBoard[7][5]==0 && moveBoard[7][6]==0 && moveBoard[7][7]==-4){
-            availableMoves.emplace_back(row,col+2);
+        if(Board::blackCastle && moveBoard[7][4]==0 && moveBoard[7][5]==0 && moveBoard[7][6]==0 && moveBoard[7][7]==-4) {
+            if (!(KingCheck(-1, moveBoard, {7, 4})) && !(KingCheck(-1, moveBoard, {7, 5})) && !(KingCheck(-1, moveBoard, {7, 6})) &&
+                !(KingCheck(-1, moveBoard, {7, 3}))) {
+                availableMoves.emplace_back(row, col + 2);
+            }
         }
     }
     if(m_pieceID>0){
 //        KING SIDE CASTLE
         if(Board::whiteCastle && moveBoard[0][2]==0 && moveBoard[0][1]==0 && moveBoard[0][0]==4){
-            availableMoves.emplace_back(row,col-2);
+            if (!(KingCheck(1,moveBoard,{0,1})) && !(KingCheck(1,moveBoard,{0,2})) && !(KingCheck(1,moveBoard,{0,3}))){
+                availableMoves.emplace_back(row,col-2);
+            }
+
         }
 //        QUEEN SIDE
         if(Board::whiteCastle && moveBoard[0][4]==0 && moveBoard[0][5]==0 && moveBoard[0][6]==0 && moveBoard[0][7]==4){
-            availableMoves.emplace_back(row,col+2);
+            if (!(KingCheck(1,moveBoard,{0,4})) && !(KingCheck(1,moveBoard,{0,5})) && !(KingCheck(1,moveBoard,{0,6})) && !(KingCheck(1,moveBoard,{0,3}))){
+                availableMoves.emplace_back(row,col+2);
+            }
         }
     }
 
@@ -210,6 +229,15 @@ bool Rules::KingCheck(int npID,const array<array<int,8>,8>& currBoard ) {
     bool diag = CheckDiagonal(currBoard,npID,Board::findKing(npID));
     bool pawn = CheckPawns(currBoard,npID,Board::findKing(npID));
     bool knight = CheckKnights(currBoard,npID,Board::findKing(npID));
+    if (lat || diag || pawn || knight) { return true; }
+    return false;
+}
+
+bool Rules::KingCheck(int npID,const array<array<int,8>,8>& currBoard,pair<int,int> kingPosition){
+    bool lat = CheckLateral(currBoard,npID,kingPosition);
+    bool diag = CheckDiagonal(currBoard,npID,kingPosition);
+    bool pawn = CheckPawns(currBoard,npID,kingPosition);
+    bool knight = CheckKnights(currBoard,npID,kingPosition);
     if (lat || diag || pawn || knight) { return true; }
     return false;
 }
