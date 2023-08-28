@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.26)
-project(chess_clion)
+project(chess_game)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(chess_clion main.cpp
+add_executable(chess_game main.cpp
         board.cpp
         game.cpp
         player.cpp
@@ -13,4 +13,4 @@ add_executable(chess_clion main.cpp
 
 find_package(SFML 2.6 COMPONENTS graphics window REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
-target_link_libraries(chess_clion sfml-graphics sfml-window )
+target_link_libraries(chess_game sfml-graphics sfml-window )
