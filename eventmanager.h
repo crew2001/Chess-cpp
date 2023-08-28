@@ -43,11 +43,11 @@ public:
 
     void GetMoves();
 
-    vector<pair<int, int>> ReturnMoves() { return m_available; };
+    vector<pair<int, int>> ReturnMoves() const { return m_available; };
 
-    pair<int, int> ReturnClickPos() { return {row, col}; }
+    pair<int, int> ReturnClickPos() const { return {row, col}; }
 
     void printBoard();
 
-    bool CheckMate();
+    static bool CheckMate(int sideSign);
 };

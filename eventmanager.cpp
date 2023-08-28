@@ -6,6 +6,14 @@
 
 
 void EventManager::HandleEvent(sf::Event &event, int turn) {
+    if(EventManager::CheckMate(-1)){
+        cout << "CHECKMATE, white wins" <<endl;
+//        this->window->close();
+    }
+    if(EventManager::CheckMate(1)){
+        cout << "CHECKMATE, black wins" <<endl;
+//        this->window->close();
+    }
 //    x is col and y is row
     int xpos = event.mouseButton.x;
     int ypos = event.mouseButton.y;
@@ -57,9 +65,12 @@ void EventManager::printBoard() {
     }
 }
 
-bool EventManager::CheckMate(){
+bool EventManager::CheckMate(int sideSign){
     // * CHECK IF THE LAST PIECE WAS PAWN OR KNIGHT 
     // * IF SO THEN KING HAS TO MOVE/ATTACKING PIECE NEEDS TO BE TAKEN
+    if (!(Rules::KingCheck(sideSign,Board::board))){
+        return false;
+    }
     int attacking = Board::lastPiece;
     pair<int,int> kingUnderAttack = (attacking<0) ? Board::findKing(1) : Board::findKing(-1);
     Rules kings(Board::board[kingUnderAttack.first][kingUnderAttack.second],kingUnderAttack.first,kingUnderAttack.second);

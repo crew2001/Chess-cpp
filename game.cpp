@@ -29,17 +29,24 @@ void Game::pollEvents() {
             case sf::Event::Closed:
                 this->window->close();
                 break;
+            case sf::Event::KeyPressed:
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+                    Board::UndoMove(Board::lastMoveBeforeAndAfter[0],Board::lastMoveBeforeAndAfter[1],Board::taken);
+                    turn--;
+                    break;
+                }
             case sf::Event::MouseButtonPressed:
-                if (canMove.size()==0){
-                    this->m_evman.HandleEvent(event,turn);
-                    if (this->m_evman.IsCorrect()){
-                        this->m_evman.GetMoves();
-                        this->canMove = m_evman.ReturnMoves();
-                        this->firstClick = m_evman.ReturnClickPos();
+            // * FIRST CLICK, LOGS AVAILABLE MOVES 
+                if (canMove.empty()){
+                    m_evman.HandleEvent(event,turn);
+                    if (m_evman.IsCorrect()){
+                        m_evman.GetMoves();
+                        canMove = m_evman.ReturnMoves();
+                        firstClick = m_evman.ReturnClickPos();
                     }
                     break;
                 }else{
-                    this->m_evman.HandleEvent(event, canMove,firstClick);
+                    m_evman.HandleEvent(event, canMove,firstClick);
                     if (canMove.size()==2){
                         Board::makeMove(canMove[0],canMove[1]);
                         if (Rules::enPassente && abs(Board::board[canMove[1].first][canMove[1].second])==1){
@@ -54,16 +61,6 @@ void Game::pollEvents() {
                         }
                         Rules::enPassente = false;
                         turn++;
-                        if (Rules::KingCheck(1,Board::board)){
-                            if(this->m_evman.CheckMate()){
-                                cout << "CHECKMATE" <<endl;
-                            }
-                        }
-                        if (Rules::KingCheck(-1,Board::board)){
-                            if(this->m_evman.CheckMate()){
-                                cout << "CHECKMATE" <<endl;
-                            }
-                        }
                         canMove.clear();
                         break;
                     } else{
@@ -84,6 +81,7 @@ void Game::render() {
 //    Render stuff here
     DrawBackground();
     DrawPieces();
+    DrawCheckNotification();
     ShowMoves();
 
     this->window->display();
@@ -149,6 +147,26 @@ void Game::ShowMoves() {
             Draw(move);
         }
         // else continue;
+    }
+}
+
+void Game::DrawCheckNotification(){
+    // IF WHITE KING CHECK THEN DRAW RED CIRCLE ONTO WHITE KING
+    if (Rules::KingCheck(1,Board::board)){
+        float ypos = ((float)Board::findKing(1).first)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+        float xpos = ((float)Board::findKing(1).second)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+        sf::CircleShape checkSymbol(10.f);
+        checkSymbol.setFillColor(sf::Color::Red);
+        checkSymbol.setPosition(xpos,ypos);
+        Draw(checkSymbol);
+    }
+    if (Rules::KingCheck(-1,Board::board)){
+        float ypos = ((float)Board::findKing(-1).first)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+        float xpos = ((float)Board::findKing(-1).second)*(1000.f)/(8.f)+((float)(0.85)*(1000.f/16.f));
+        sf::CircleShape checkSymbol(10.f);
+        checkSymbol.setFillColor(sf::Color::Red);
+        checkSymbol.setPosition(xpos,ypos);
+        Draw(checkSymbol);
     }
 }
 

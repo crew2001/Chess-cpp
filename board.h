@@ -12,16 +12,19 @@ using namespace std;
 
 class Board {
     static inline pair<int,int> whiteKing = {0,3};
+    static inline int whiteKingMoves = 0;
     static inline pair<int,int> blackKing = {7,3};
-
+    static inline int blackKingMoves =0;
 public:
     Board() {};
 
     ~Board() {};
 
     array<array<int, 8>, 8> getBoard() { return board; };
-
-    static void setBoard(array<array<int, 8>, 8> newBoard) { board = newBoard; };
+    // static void GetKingMoves(int signKing){
+    //     return 
+    // }
+    static void setBoard(array<array<int, 8>, 8> const& newBoard) { board = newBoard; };
 
     static void printBoard();
 
@@ -29,7 +32,7 @@ public:
     static pair<int,int> findKing(int kingSign);
     static void moveKing(int kingSign,pair<int,int> newPosition);
     static inline array<array<int, 8>, 8> board = {
-            {{4, 0,0, 6,0,0,0, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, -1, 0},
+            {{4, 0,0, 6,0,0,0, 4}, {1, 1, 5, 1, -1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, -1, 0},
              {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
              {-4, 0,0, -6,0,0,0, -4}}};
 //    static inline array<array<int, 8>, 8> board = {
@@ -39,13 +42,13 @@ public:
     static void UndoMove(pair<int,int> newPosition, pair<int,int> oldPosition, int taken);
     
     // * ADDING LAST MOVE TRACKING
-
+    static inline vector<pair<int,int>> lastMoveBeforeAndAfter;
+    static inline int taken;
     static inline pair<int,int> lastMove;
     static inline int lastPiece;
     static inline bool blackCastle = true;
     static inline bool whiteCastle = true;
-//    static vector<pair<int,int>> whitePieces = {{0,0},{0,1},{0,2},{0,3},{0,4},{0,5},{0,6},{0,7},{1,0},{1,1},{1,2},{1,3},{1,4},{1,5},{1,6},{1,7}};
-//
-//    static vector<pair<int,int>> blackPieces = {{7,0},{7,1},{7,2},{7,3},{7,4},{7,5},{7,6},{7,7},{6,0},{6,1},{6,2},{6,3},{6,4},{6,5},{6,6},{6,7}};
 
+    // TODO: Write a function to handle the castling rights properly
+    static void SimMove(array<array<int,8>,8>& simBoard, pair<int,int> start,pair<int,int> end, pair<int,int>& kingcopy);
 };
