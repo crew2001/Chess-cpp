@@ -31,14 +31,14 @@ public:
     static void makeMove(pair<int,int> start, pair<int,int> end);
     static pair<int,int> findKing(int kingSign);
     static void moveKing(int kingSign,pair<int,int> newPosition);
-    static inline array<array<int, 8>, 8> board = {
-            {{4, 0,0, 6,0,0,0, 4}, {1, 1, 5, 1, -1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, -1, 0},
-             {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
-             {-4, 0,0, -6,0,0,0, -4}}};
-//    static inline array<array<int, 8>, 8> board = {
-//            {{4, 2, 3, 6,5, 3, 2, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
-//             {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
-//             {-4, -2, -3, -6, -5, -3, -2, -4}}};
+    // static inline array<array<int, 8>, 8> board = {
+    //         {{4, 0,0, 6,0,0,0, 4}, {1, 1, 5, 1, -1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, -1, 0},
+    //          {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
+    //          {-4, 0,0, -6,0,0,0, -4}}};
+   static inline array<array<int, 8>, 8> board = {
+           {{4, 2, 3, 6,5, 3, 2, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
+            {-4, -2, -3, -6, -5, -3, -2, -4}}};
     static void UndoMove(pair<int,int> newPosition, pair<int,int> oldPosition, int taken);
     
     // * ADDING LAST MOVE TRACKING
