@@ -5,7 +5,7 @@ This is a work in progress project in which I am making a chess program for 2 pl
 
 ## Outline
 
-* chess_game executable
+* chess_game executable : this will be created after running cmake .. in the build directory 
 * board.cpp/.h : controls the board, such as making moves onto the board, and setting the board. The representation used has been an 8x8 array, with numbers representing the pieces. With positive = White, and negative = black
 * Pieces key : ($\pm$ 1 = pawn;$\pm$ 2 = Knight; $\pm$ 3 = Bishop; $\pm$ 4 = Rook; $\pm$ 5 = Queen; $\pm$ 6 = King)
 * Eventmanager.cpp/.h : handles the input of clicks onto the board, and feeds the position of the click to the Rules class
