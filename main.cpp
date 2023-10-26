@@ -1,6 +1,6 @@
 #include <iostream>
-#include "board.h"
-#include "game.h"
+#include "game_engine/game.h"
+
 using namespace std;
 int main() {
     Game game;
