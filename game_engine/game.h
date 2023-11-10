@@ -13,30 +13,30 @@
 #include "pieces.h"
 #include "eventmanager.h"
 #include "rules.h"
+#include "window.h"
 using namespace std;
 class Game
 {
 public:
-    Game();
-    ~Game() = default;
+    Game(int window_size = 1000);
 
     //    Accessors
 
     //  Modifiers
 
     //  Functions
-    bool running() const { return this->window->isOpen(); }
+    bool running() { return this->m_window->isWindowOpen(); }
     void update();
     void render();
-    void pollEvents();
-    void DrawBackground();
-    void Draw(sf::Drawable &l_drawable);
+    void PollEvents();
     void ShowMoves();
     void MakeMove();
     void DrawCheckNotification();
+    int window_size;
 
 private:
     int turn;
+
     //    true if white is in check
     static bool whiteCheck;
     //  true if black is in check
@@ -44,16 +44,10 @@ private:
     vector<pair<int, int>> canMove;
     pair<int, int> firstClick;
     sf::Event event;
-    vector<sf::Texture> m_textures = Pieces::loadTextures();
-    sf::RenderWindow *window;
-    sf::VideoMode videoMode;
     EventManager m_evman;
-    vector<sf::Sprite> sprites;
-    Board m_board;
+    Window *m_window;
     array<array<int, 8>, 8> arrboard = Board::board;
     bool endGame;
-    void initVariables();
     void initWindow();
-    void PiecesOnBoard();
-    void DrawPieces();
+    void getEvent();
 };
