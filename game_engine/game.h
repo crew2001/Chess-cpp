@@ -42,6 +42,7 @@ private:
     //  true if black is in check
     static bool blackCheck;
     vector<pair<int, int>> canMove;
+    pair<int, int> click_pos;
     pair<int, int> firstClick;
     sf::Event event;
     EventManager m_evman;
@@ -49,5 +50,5 @@ private:
     array<array<int, 8>, 8> arrboard = Board::board;
     bool endGame;
     void initWindow();
-    void getEvent();
+    // void getEvent();
 };

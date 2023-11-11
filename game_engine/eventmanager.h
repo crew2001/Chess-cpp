@@ -35,9 +35,9 @@ public:
 
   ~EventManager() = default;
 
-  void HandleEvent(const sf::Event &event, int turn);
+  void HandleEvent(const pair<int, int> &click_pos, int turn);
 
-  void HandleEvent(const sf::Event &event, vector<pair<int, int>> &gameMoves,
+  void HandleEvent(const pair<int, int> &click_pos, vector<pair<int, int>> &gameMoves,
                    const pair<int, int> &currentPiece);
 
   bool IsCorrect() { return CorrectPiece; };

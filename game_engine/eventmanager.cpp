@@ -10,7 +10,7 @@
  * @param event : first click of mouse
  * @param turn : current turn, even is white, odd is black
  */
-void EventManager::HandleEvent(const sf::Event &event, int turn)
+void EventManager::HandleEvent(const pair<int, int> &click_pos, int turn)
 {
   if (EventManager::CheckMate(-1))
   {
@@ -23,13 +23,8 @@ void EventManager::HandleEvent(const sf::Event &event, int turn)
     //        this->window->close();
   }
   //    x is col and y is row
-  float xpos = event.mouseButton.x;
-  float ypos = event.mouseButton.y;
-  cout << "Ev man : xpos = " << xpos << " ypos = " << ypos << endl;
-  float squareSize = float(window_size) / 8.0;
-  col = floor(xpos / squareSize);
-  row = floor((ypos) / squareSize);
-  cout << "Ev man : row = " << row << " col = " << col << endl;
+  col = click_pos.first;
+  row = click_pos.second;
   PieceChosen = (Board::board)[row][col];
   if ((turn % 2 == 0 && PieceChosen < 0) ||
       (turn % 2 == 1 && PieceChosen > 0))
@@ -49,17 +44,12 @@ void EventManager::HandleEvent(const sf::Event &event, int turn)
  * @param gameMoves : vector of pairs of positions of allowed moves from first click
  * @param currentPiece : piece that was clicked on first
  */
-void EventManager::HandleEvent(const sf::Event &event,
+void EventManager::HandleEvent(const pair<int, int> &click_pos,
                                vector<pair<int, int>> &gameMoves,
                                const pair<int, int> &currentPiece)
 {
-  float xpos = event.mouseButton.x;
-  float ypos = event.mouseButton.y;
-  cout << "Ev man : xpos = " << xpos << " ypos = " << ypos << endl;
-  float squareSize = float(window_size) / 8.0;
-  col = floor(xpos / squareSize);
-  row = floor((ypos) / squareSize);
-  cout << "Ev man : row = " << row << " col = " << col << endl;
+  col = click_pos.first;
+  row = click_pos.second;
   //    PieceChosen = (m_board.getBoard())[row][col];
   pair<int, int> searchVect = {row, col};
   if (find(gameMoves.begin(), gameMoves.end(), searchVect) != gameMoves.end())

@@ -1,8 +1,7 @@
 #include "window.h"
 
-Window::Window(int window_size)
+Window::Window(int window_size) : WINDOW_SIZE(window_size), isOpen(true)
 {
-  windowParams(window_size);
   this->initWindow(window_size);
 }
 
@@ -10,7 +9,7 @@ void Window::drawBackground()
 {
   auto black = sf::Color(118, 150, 86);
   auto white = sf::Color(238, 238, 210);
-  sf::RectangleShape square(sf::Vector2f(float(WINDOW_SIZE) / 8.0, float(WINDOW_SIZE) / 8.0));
+  sf::RectangleShape square(sf::Vector2f(float(WINDOW_SIZE) / 8.f, float(WINDOW_SIZE) / 8.f));
   for (int i = 0; i < 8; i++)
   {
 
@@ -19,13 +18,13 @@ void Window::drawBackground()
       if ((i + j) % 2 == 0)
       {
         square.setFillColor(white);
-        square.setPosition(j * float(WINDOW_SIZE) / 8.0, i * float(WINDOW_SIZE) / 8.0);
+        square.setPosition(float(j) * float(WINDOW_SIZE) / 8.f, float(i) * float(WINDOW_SIZE) / 8.f);
         draw(square);
       }
       else
       {
         square.setFillColor(black);
-        square.setPosition(j * float(WINDOW_SIZE) / 8.0, i * float(WINDOW_SIZE) / 8.0);
+        square.setPosition(float(j) * float(WINDOW_SIZE) / 8.f, float(i) * float(WINDOW_SIZE) / 8.f);
         draw(square);
       }
     }
@@ -44,24 +43,25 @@ void Window::initWindow(int window_size)
       new sf::RenderWindow(this->videoMode, "Game", sf::Style::Close);
 }
 
-void Window::windowParams(int window_size)
+void Window::pollEvents(pair<int, int> &click_pos)
 {
-  WINDOW_SIZE = window_size;
-  isOpen = true;
-}
-
-bool Window::pollEvents(sf::Event &event)
-{
-  if (this->window->pollEvent(event))
+  while (this->window->pollEvent(event))
   {
     if (event.type == sf::Event::Closed)
     {
       this->window->close();
       closeWindow();
-      return false;
+    }
+    if (event.type == sf::Event::MouseButtonPressed)
+    {
+      int xpos = event.mouseButton.x;
+      int ypos = event.mouseButton.y;
+      double squareSize = double(WINDOW_SIZE) / 8.0;
+      int col = floor(xpos / squareSize);
+      int row = floor((ypos) / squareSize);
+      click_pos = {col, row};
     }
   }
-  return this->window->pollEvent(event);
 }
 
 void Window::drawPieces()

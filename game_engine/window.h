@@ -11,14 +11,14 @@ using namespace std;
 class Window
 {
 private:
-  sf::RenderWindow *window{};
+  sf::RenderWindow *window;
   sf::VideoMode videoMode;
   vector<sf::Texture> m_textures = Pieces::loadTextures();
   vector<sf::Sprite> sprites;
   bool isOpen;
   void initWindow(int window_size);
   int WINDOW_SIZE;
-  void windowParams(int window_size);
+  sf::Event event;
 
 public:
   Window(int window_size);
@@ -38,6 +38,6 @@ public:
 
   void closeWindow() { this->isOpen = false; };
 
-  bool pollEvents(sf::Event &event);
+  void pollEvents(pair<int, int> &click_pos);
   sf::RenderWindow *getWindow() { return this->window; };
 };
