@@ -6,7 +6,7 @@
 
 Game::Game(int window_size) : m_evman(window_size), window_size(window_size), endGame(false), turn(0)
 {
-  this->initWindow();
+  initWindow();
 }
 
 void Game::initWindow()
@@ -14,17 +14,19 @@ void Game::initWindow()
   m_window = new Window(window_size);
 }
 
-void Game::update() { PollEvents(); }
+void Game::update() {
+    PollEvents();
+}
 
 void Game::render()
 {
-  this->m_window->clear();
+  m_window->clear();
   //    Render stuff here
-  this->m_window->drawBackground();
-  this->m_window->drawPieces();
+  m_window->drawBackground();
+  m_window->drawPieces();
   ShowMoves();
   DrawCheckNotification();
-  this->m_window->display();
+  m_window->display();
 }
 
 void Game::ShowMoves()
@@ -43,6 +45,11 @@ void Game::DrawCheckNotification()
   // IF WHITE KING CHECK THEN DRAW RED CIRCLE ONTO WHITE KING
   if (Rules::KingCheck(1, Board::board))
   {
+      if (EventManager::CheckMate(1)){
+          endGame = true;
+          m_window->closeWindow();
+          cout << "CHECKMATE, black wins" << endl;
+      }
     float ypos = ((float)Board::findKing(1).first) * square_size +
                  (square_size * 3.f / 8.f);
     float xpos = ((float)Board::findKing(1).second) * square_size +
@@ -51,6 +58,11 @@ void Game::DrawCheckNotification()
   }
   else if (Rules::KingCheck(-1, Board::board))
   {
+        if (EventManager::CheckMate(-1)){
+            endGame = true;
+            m_window->closeWindow();
+            cout << "CHECKMATE, white wins" << endl;
+        }
     float ypos = ((float)Board::findKing(-1).first) * square_size +
                  (square_size * 3.f / 8.f);
     float xpos = ((float)Board::findKing(-1).second) * square_size +

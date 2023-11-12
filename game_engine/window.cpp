@@ -1,8 +1,8 @@
 #include "window.h"
 
-Window::Window(int window_size) : WINDOW_SIZE(window_size), isOpen(true)
+Window::Window(int window_size) : WINDOW_SIZE(window_size), isOpen(true), window(sf::VideoMode(window_size, window_size), "Game", sf::Style::Close)
 {
-  this->initWindow(window_size);
+    initWindow();
 }
 
 void Window::drawBackground()
@@ -33,34 +33,40 @@ void Window::drawBackground()
 
 void Window::draw(const sf::Drawable &l_drawable)
 {
-  this->window->draw(l_drawable);
+  window.draw(l_drawable);
 }
 
-void Window::initWindow(int window_size)
+void Window::initWindow()
 {
-  this->videoMode = sf::VideoMode(window_size, window_size);
-  this->window =
-      new sf::RenderWindow(this->videoMode, "Game", sf::Style::Close);
+//  videoMode = sf::VideoMode(window_size, window_size);
+//  window =
+//      sf::RenderWindow(videoMode, "Game", sf::Style::Close);
+  window.setFramerateLimit(60);
+  window.setActive(false);
 }
 
 void Window::pollEvents(pair<int, int> &click_pos)
 {
-  while (this->window->pollEvent(event))
+  while (window.pollEvent(event))
   {
-    if (event.type == sf::Event::Closed)
-    {
-      this->window->close();
-      closeWindow();
-    }
-    if (event.type == sf::Event::MouseButtonPressed)
-    {
-      int xpos = event.mouseButton.x;
-      int ypos = event.mouseButton.y;
-      double squareSize = double(WINDOW_SIZE) / 8.0;
-      int col = floor(xpos / squareSize);
-      int row = floor((ypos) / squareSize);
-      click_pos = {col, row};
-    }
+      switch(event.type){
+            case sf::Event::Closed:
+                window.close();
+                closeWindow();
+                break;
+            case sf::Event::MouseButtonPressed: {
+                int xpos = event.mouseButton.x;
+                int ypos = event.mouseButton.y;
+                double squareSize = double(WINDOW_SIZE) / 8.0;
+                int col = floor(xpos / squareSize);
+                int row = floor((ypos) / squareSize);
+                click_pos = {col, row};
+                break;
+            }
+            default:
+                break;
+      }
+
   }
 }
 
@@ -109,10 +115,10 @@ void Window::showMoves(const pair<int, int> &x)
   float ypos = ((float)x.first) * float(WINDOW_SIZE) / (8.f);
   float xpos = ((float)x.second) * float(WINDOW_SIZE) / (8.f);
   //  * Make circle shape be in middle of square
-  float squareSize = float(WINDOW_SIZE) / 8.0;
+  float squareSize = float(WINDOW_SIZE) / 8.f;
 
-  ypos = ypos + (squareSize / 2.0) - 10.0;
-  xpos = xpos + (squareSize / 2.0) - 10.0;
+  ypos = ypos + (squareSize / 2.f) - 10.f;
+  xpos = xpos + (squareSize / 2.f) - 10.f;
   sf::CircleShape move(10.f);
   move.setFillColor(sf::Color::Cyan);
   move.setPosition(xpos, ypos);
