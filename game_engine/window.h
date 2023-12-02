@@ -3,6 +3,7 @@
 #include "eventmanager.h"
 #include "pieces.h"
 #include "board.h"
+#include "rules.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <array>
@@ -16,9 +17,8 @@ private:
   vector<sf::Texture> m_textures = Pieces::loadTextures();
   vector<sf::Sprite> sprites;
   bool isOpen;
-  void initWindow();
+  // void initWindow();
   int WINDOW_SIZE;
-  sf::Event event;
 
 public:
   Window(int window_size);
@@ -27,16 +27,16 @@ public:
   void drawBackground();
   void drawPieces();
   void getSprites();
-  void showMoves(const pair<int, int> &x);
+  void showMoves(const vector<pair<int, int>> &x, const pair<int, int> &firstClick);
   void render();
   void drawCheckNotification(float xpos, float ypos);
-  void clear() { this->window.clear(); };
+  void clear() { window.clear(); };
   void piecesOnBoard();
-  void display() { this->window.display(); };
+  void display() { window.display(); };
 
-  bool isWindowOpen() { return this->isOpen; };
+  bool isWindowOpen() { return isOpen; };
 
-  void closeWindow() { this->isOpen = false; };
+  void closeWindow() { isOpen = false; };
 
   void pollEvents(pair<int, int> &click_pos);
 };

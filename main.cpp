@@ -4,10 +4,7 @@
 using namespace std;
 int main() {
   Game game(800);
-  while(game.running()) {
-    game.update();
-    game.render();
-  }
+  game.PlayGame();
   return 0;
 }
 

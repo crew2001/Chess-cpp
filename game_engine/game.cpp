@@ -4,15 +4,22 @@
 
 #include "game.h"
 
-Game::Game(int window_size) : m_evman(window_size), window_size(window_size), endGame(false), turn(0)
+Game::Game( int window_size) : m_evman(window_size), window_size(window_size), endGame(false), turn(0)
 {
   initWindow();
 }
 
-void Game::initWindow()
-{
+void Game::initWindow() {
   m_window = new Window(window_size);
 }
+
+void Game::PlayGame() {
+  while(m_window->isWindowOpen()) {
+    update();
+    render();
+  }
+}
+
 
 void Game::update() {
     PollEvents();
@@ -24,20 +31,14 @@ void Game::render()
   //    Render stuff here
   m_window->drawBackground();
   m_window->drawPieces();
-  ShowMoves();
+  m_window->showMoves(canMove, firstClick);
   DrawCheckNotification();
   m_window->display();
 }
 
 void Game::ShowMoves()
 {
-  for (auto x : canMove)
-  {
-    if (Rules::CanMove(firstClick, x))
-    {
-      m_window->showMoves(x);
-    }
-  }
+  m_window->showMoves(canMove, firstClick);
 }
 void Game::DrawCheckNotification()
 {

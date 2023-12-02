@@ -7,7 +7,7 @@
 /**
  * @brief Handles first click of mouse and checks if piece is correct colour
  *
- * @param event : first click of mouse
+ * @param click_pos position : first click of mouse
  * @param turn : current turn, even is white, odd is black
  */
 void EventManager::HandleEvent(const pair<int, int> &click_pos, int turn)
@@ -23,8 +23,8 @@ void EventManager::HandleEvent(const pair<int, int> &click_pos, int turn)
     //        this->window->close();
   }
   //    x is col and y is row
-  col = click_pos.first;
-  row = click_pos.second;
+  row = click_pos.first;
+  col = click_pos.second;
   PieceChosen = (Board::board)[row][col];
   if ((turn % 2 == 0 && PieceChosen < 0) ||
       (turn % 2 == 1 && PieceChosen > 0))
@@ -38,9 +38,9 @@ void EventManager::HandleEvent(const pair<int, int> &click_pos, int turn)
 }
 
 /**
- * @brief Handles second click of mouse and checks if move is valid, if is then returns a vector of the two positions, as pairs
+ * @brief Handles second click of mouse and checks if move is valid, if is then returns a vector of the two positions, as pairs, i.e returns the start and end position of the move
  *
- * @param event : second click of mouse
+ * @param click_pos position : second click of mouse
  * @param gameMoves : vector of pairs of positions of allowed moves from first click
  * @param currentPiece : piece that was clicked on first
  */
@@ -48,8 +48,8 @@ void EventManager::HandleEvent(const pair<int, int> &click_pos,
                                vector<pair<int, int>> &gameMoves,
                                const pair<int, int> &currentPiece)
 {
-  col = click_pos.first;
-  row = click_pos.second;
+  row = click_pos.first;
+  col = click_pos.second;
   //    PieceChosen = (m_board.getBoard())[row][col];
   pair<int, int> searchVect = {row, col};
   if (find(gameMoves.begin(), gameMoves.end(), searchVect) != gameMoves.end())

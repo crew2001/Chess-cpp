@@ -8,8 +8,6 @@
 #include <vector>
 #include <array>
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include "pieces.h"
 #include "eventmanager.h"
 #include "rules.h"
@@ -18,14 +16,14 @@ using namespace std;
 class Game
 {
 public:
-    Game(int window_size = 1000);
+    Game( int window_size);
 
     //    Accessors
 
     //  Modifiers
 
     //  Functions
-    bool running() { return this->m_window->isWindowOpen(); }
+    bool running() { return m_window->isWindowOpen(); }
     void update();
     void render();
     void PollEvents();
@@ -33,6 +31,7 @@ public:
     void MakeMove();
     void DrawCheckNotification();
     int window_size;
+    void PlayGame();
 
 private:
     int turn;
@@ -44,7 +43,6 @@ private:
     vector<pair<int, int>> canMove;
     pair<int, int> click_pos;
     pair<int, int> firstClick;
-    sf::Event event;
     EventManager m_evman;
     Window *m_window;
     array<array<int, 8>, 8> arrboard = Board::board;
