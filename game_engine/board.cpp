@@ -43,7 +43,7 @@ void Board::makeMove(pair<int, int> start, pair<int, int> end) {
             }
     }
     // * ADDING PAWN TO QUEEN AT END
-    if ((temp==1 && end.first==7)){
+    if (temp==1 && end.first==7){
         temp = 5;
     }
     if (temp==-1 && end.first==0){
@@ -97,7 +97,7 @@ void Board::UndoMove(pair<int, int> newPosition, pair<int, int> oldPosition, int
     }
     // * NOW IF PAWN WAS MOVED TO THE ENDS
     if (abs(lastPiece)==1){
-        if ((newPosition.first==0 || newPosition.first == 7) && abs(temp)==5 && (abs(newPosition.first-oldPosition.first)==1)){
+        if ((newPosition.first==0 || newPosition.first == 7) && abs(temp)==5 && abs(newPosition.first-oldPosition.first)==1){
             if (temp<0){
                 temp=-1;
             }
@@ -140,7 +140,7 @@ void Board::SimMove(array<array<int,8>,8>& simBoard, pair<int,int> start,pair<in
             }
     }
     // * ADDING PAWN TO QUEEN AT END
-    if ((temp==1 && end.first==7)){
+    if (temp==1 && end.first==7){
         temp = 5;
     }
     if (temp==-1 && end.first==0){

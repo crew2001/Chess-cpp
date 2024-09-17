@@ -44,40 +44,40 @@ vector<pair<int, int>> Rules::GetMoves() {
 void Rules::PawnMoves(const array<array<int, 8>, 8> &moveBoard) {
   //    if white
   if (m_pieceID > 0) {
-    if ((moveBoard)[row + 1][col] == 0) {
+    if (moveBoard[row + 1][col] == 0) {
       availableMoves.emplace_back(row + 1, col);
-      if (row == 1 && (moveBoard)[row + 2][col] == 0) {
+      if (row == 1 && moveBoard[row + 2][col] == 0) {
         availableMoves.emplace_back(row + 2, col);
       }
     }
     for (int i = -1; i < 2; i += 2) {
-      if ((moveBoard)[row + i * i][col + i] * (moveBoard)[row][col] < 0) {
+      if (moveBoard[row + i * i][col + i] * moveBoard[row][col] < 0) {
         availableMoves.emplace_back(row + i * i, col + i);
       }
     }
     if (row == 4 && Board::lastMove.first == 4 &&
-        ((Board::lastMove.second == col + 1) ||
-         (Board::lastMove.second == col - 1))) {
+        (Board::lastMove.second == col + 1 ||
+         Board::lastMove.second == col - 1)) {
       availableMoves.emplace_back(Board::lastMove.first + 1,
                                   Board::lastMove.second);
       enPassente = true;
     }
   } // else black
   else {
-    if ((moveBoard)[row - 1][col] == 0) {
+    if (moveBoard[row - 1][col] == 0) {
       availableMoves.emplace_back(row - 1, col);
-      if (row == 6 && (moveBoard)[row - 2][col] == 0) {
+      if (row == 6 && moveBoard[row - 2][col] == 0) {
         availableMoves.emplace_back(row - 2, col);
       }
     }
     for (int i = -1; i < 2; i += 2) {
-      if ((moveBoard)[row - i * i][col - i] * (moveBoard)[row][col] < 0) {
+      if (moveBoard[row - i * i][col - i] * moveBoard[row][col] < 0) {
         availableMoves.emplace_back(row - i * i, col - i);
       }
     }
     if (row == 3 && Board::lastMove.first == row &&
-        ((Board::lastMove.second == col + 1) ||
-         (Board::lastMove.second == col - 1))) {
+        (Board::lastMove.second == col + 1 ||
+         Board::lastMove.second == col - 1)) {
       availableMoves.emplace_back(Board::lastMove.first - 1,
                                   Board::lastMove.second);
       enPassente = true;
@@ -91,14 +91,14 @@ void Rules::KnightMoves(const array<array<int, 8>, 8> &moveBoard) {
   for (pair<int, int> x : perms) {
     int newRow = row + x.first;
     int newCol = col + x.second;
-    if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+    if (newRow < 0 || newRow > 7 || (newCol < 0 || newCol > 7))
       continue;
     else {
-      if ((moveBoard)[newRow][newCol] == 0) {
+      if (moveBoard[newRow][newCol] == 0) {
         availableMoves.emplace_back(newRow, newCol);
       }
       // use fact that same colour will times to positive
-      else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0)) {
+      else if (moveBoard[row][col] * moveBoard[newRow][newCol] < 0) {
         availableMoves.emplace_back(newRow, newCol);
       } else
         continue;
@@ -124,14 +124,14 @@ void Rules::KingMoves(const array<array<int, 8>, 8> &moveBoard) {
     for (int j = -1; j < 2; j++) {
       int newRow = row + i;
       int newCol = col + j;
-      if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+      if (newRow < 0 || newRow > 7 || (newCol < 0 || newCol > 7))
         continue;
       else {
-        if ((moveBoard)[newRow][newCol] == 0) {
+        if (moveBoard[newRow][newCol] == 0) {
           availableMoves.emplace_back(newRow, newCol);
         }
         // use fact that same colour will times to positive
-        else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0)) {
+        else if (moveBoard[row][col] * moveBoard[newRow][newCol] < 0) {
           availableMoves.emplace_back(newRow, newCol);
         } else
           continue;
@@ -141,18 +141,18 @@ void Rules::KingMoves(const array<array<int, 8>, 8> &moveBoard) {
   if (m_pieceID < 0) {
     if (Board::blackCastle && moveBoard[7][2] == 0 && moveBoard[7][1] == 0 &&
         moveBoard[7][0] == -4) {
-      if (!(KingCheck(-1, moveBoard, {7, 1})) &&
-          !(KingCheck(-1, moveBoard, {7, 2})) &&
-          !(KingCheck(-1, moveBoard, {7, 3}))) {
+      if (!KingCheck(-1, moveBoard, {7, 1}) &&
+          !KingCheck(-1, moveBoard, {7, 2}) &&
+          !KingCheck(-1, moveBoard, {7, 3})) {
         availableMoves.emplace_back(row, col - 2);
       }
     }
     if (Board::blackCastle && moveBoard[7][4] == 0 && moveBoard[7][5] == 0 &&
         moveBoard[7][6] == 0 && moveBoard[7][7] == -4) {
-      if (!(KingCheck(-1, moveBoard, {7, 4})) &&
-          !(KingCheck(-1, moveBoard, {7, 5})) &&
-          !(KingCheck(-1, moveBoard, {7, 6})) &&
-          !(KingCheck(-1, moveBoard, {7, 3}))) {
+      if (!KingCheck(-1, moveBoard, {7, 4}) &&
+          !KingCheck(-1, moveBoard, {7, 5}) &&
+          !KingCheck(-1, moveBoard, {7, 6}) &&
+          !KingCheck(-1, moveBoard, {7, 3})) {
         availableMoves.emplace_back(row, col + 2);
       }
     }
@@ -161,19 +161,19 @@ void Rules::KingMoves(const array<array<int, 8>, 8> &moveBoard) {
     //        KING SIDE CASTLE
     if (Board::whiteCastle && moveBoard[0][2] == 0 && moveBoard[0][1] == 0 &&
         moveBoard[0][0] == 4) {
-      if (!(KingCheck(1, moveBoard, {0, 1})) &&
-          !(KingCheck(1, moveBoard, {0, 2})) &&
-          !(KingCheck(1, moveBoard, {0, 3}))) {
+      if (!KingCheck(1, moveBoard, {0, 1}) &&
+          !KingCheck(1, moveBoard, {0, 2}) &&
+          !KingCheck(1, moveBoard, {0, 3})) {
         availableMoves.emplace_back(row, col - 2);
       }
     }
     //        QUEEN SIDE
     if (Board::whiteCastle && moveBoard[0][4] == 0 && moveBoard[0][5] == 0 &&
         moveBoard[0][6] == 0 && moveBoard[0][7] == 4) {
-      if (!(KingCheck(1, moveBoard, {0, 4})) &&
-          !(KingCheck(1, moveBoard, {0, 5})) &&
-          !(KingCheck(1, moveBoard, {0, 6})) &&
-          !(KingCheck(1, moveBoard, {0, 3}))) {
+      if (!KingCheck(1, moveBoard, {0, 4}) &&
+          !KingCheck(1, moveBoard, {0, 5}) &&
+          !KingCheck(1, moveBoard, {0, 6}) &&
+          !KingCheck(1, moveBoard, {0, 3})) {
         availableMoves.emplace_back(row, col + 2);
       }
     }
@@ -184,13 +184,13 @@ void Rules::DiagonalMoves(const array<array<int, 8>, 8> &moveBoard) {
   for (int i = -1; i < 2; i += 2) {
     for (int j = -1; j < 2; j += 2) {
       int k = 1;
-      while ((row + k * i >= 0) && (row + k * i < 8) && (col + k * j >= 0) &&
-             (col + k * j < 8)) {
-        if ((moveBoard)[row + i * k][col + j * k] == 0) {
+      while (row + k * i >= 0 && row + k * i < 8 && col + k * j >= 0 &&
+             col + k * j < 8) {
+        if (moveBoard[row + i * k][col + j * k] == 0) {
           availableMoves.emplace_back(row + i * k, col + j * k);
           k++;
         } else {
-          if ((moveBoard)[row + i * k][col + j * k] * (moveBoard)[row][col] <
+          if (moveBoard[row + i * k][col + j * k] * moveBoard[row][col] <
               0) {
             availableMoves.emplace_back(row + i * k, col + j * k);
           }
@@ -204,24 +204,24 @@ void Rules::DiagonalMoves(const array<array<int, 8>, 8> &moveBoard) {
 void Rules::LateralMoves(const array<array<int, 8>, 8> &moveBoard) {
   for (int i = -1; i < 2; i += 2) {
     int k = 1;
-    while ((col + k * i >= 0) && (col + k * i < 8)) {
-      if ((moveBoard)[row][col + k * i] == 0) {
+    while (col + k * i >= 0 && col + k * i < 8) {
+      if (moveBoard[row][col + k * i] == 0) {
         availableMoves.emplace_back(row, col + k * i);
         k++;
       } else {
-        if ((moveBoard)[row][col] * (moveBoard)[row][col + k * i] < 0) {
+        if (moveBoard[row][col] * moveBoard[row][col + k * i] < 0) {
           availableMoves.emplace_back(row, col + k * i);
         }
         break;
       }
     }
     k = 1;
-    while ((row + k * i >= 0) && (row + k * i < 8)) {
-      if ((moveBoard)[row + k * i][col] == 0) {
+    while (row + k * i >= 0 && row + k * i < 8) {
+      if (moveBoard[row + k * i][col] == 0) {
         availableMoves.emplace_back(row + k * i, col);
         k++;
       } else {
-        if ((moveBoard)[row][col] * (moveBoard)[row + k * i][col] < 0) {
+        if (moveBoard[row][col] * moveBoard[row + k * i][col] < 0) {
           availableMoves.emplace_back(row + k * i, col);
         }
         break;
@@ -261,12 +261,12 @@ bool Rules::CheckDiagonal(const array<array<int, 8>, 8> &currBoard,
   for (int i = -1; i < 2; i += 2) {
     for (int j = -1; j < 2; j += 2) {
       int k = 1;
-      while ((kingPos.first + k * i >= 0) && (kingPos.first + k * i < 8) &&
-             (kingPos.second + k * j >= 0) && (kingPos.second + k * j < 8)) {
+      while (kingPos.first + k * i >= 0 && kingPos.first + k * i < 8 &&
+             kingPos.second + k * j >= 0 && kingPos.second + k * j < 8) {
         int piece = currBoard[kingPos.first + i * k][kingPos.second + j * k];
         if (piece == 0) {
           k++;
-        } else if ((piece == kingSign * -5) || (piece == kingSign * -3)) {
+        } else if (piece == kingSign * -5 || piece == kingSign * -3) {
           return true;
         } else {
           break;
@@ -283,22 +283,22 @@ bool Rules::CheckLateral(const array<array<int, 8>, 8> &currBoard, int kingSign,
   for (int i = -1; i < 2; i += 2) {
     int k = 1;
     //        searches along the row
-    while ((kingPos.second + k * i >= 0) && (kingPos.second + k * i < 8)) {
+    while (kingPos.second + k * i >= 0 && kingPos.second + k * i < 8) {
       int piece = currBoard[kingPos.first][kingPos.second + k * i];
       if (piece == 0) {
         k++;
-      } else if ((piece == kingSign * -5) || (piece == kingSign * -4)) {
+      } else if (piece == kingSign * -5 || piece == kingSign * -4) {
         return true;
       } else
         break;
     }
     k = 1;
     //        searches along the column
-    while ((kingPos.first + k * i >= 0) && (kingPos.first + k * i < 8)) {
+    while (kingPos.first + k * i >= 0 && kingPos.first + k * i < 8) {
       int piece = currBoard[kingPos.first + k * i][kingPos.second];
       if (piece == 0) {
         k++;
-      } else if ((piece == kingSign * -5) || (piece == kingSign * -4)) {
+      } else if (piece == kingSign * -5 || piece == kingSign * -4) {
         return true;
       } else
         break;
@@ -335,10 +335,10 @@ bool Rules::CheckKnights(const array<array<int, 8>, 8> &currBoard, int kingSign,
 
 bool Rules::CanMove(pair<int, int> start, pair<int, int> end) {
   int temp = Board::board[start.first][start.second];
-  int pieceSign = (temp < 0) ? -1 : 1;
+  int pieceSign = temp < 0 ? -1 : 1;
   int taken = Board::board[end.first][end.second];
   array<array<int, 8>, 8> saveBoard = Board::board;
-  pair<int,int> kingcopy = (pieceSign<0) ? Board::findKing(-1) : Board::findKing(1);
+  pair<int,int> kingcopy = pieceSign<0 ? Board::findKing(-1) : Board::findKing(1);
   Board::SimMove(saveBoard,start, end,kingcopy);
   if (KingCheck(pieceSign, saveBoard,kingcopy)) {
     return false;
@@ -351,27 +351,27 @@ void Rules::PawnMoves(const array<array<int, 8>, 8> &moveBoard,
                       vector<pair<int, int>> &moves) {
   //    if white
   if (m_pieceID > 0) {
-    if ((moveBoard)[row + 1][col] == 0) {
+    if (moveBoard[row + 1][col] == 0) {
       moves.emplace_back(row + 1, col);
-      if (row == 1 && (moveBoard)[row + 2][col] == 0) {
+      if (row == 1 && moveBoard[row + 2][col] == 0) {
         moves.emplace_back(row + 2, col);
       }
     }
     for (int i = -1; i < 2; i += 2) {
-      if ((moveBoard)[row + i * i][col + i] * (moveBoard)[row][col] < 0) {
+      if (moveBoard[row + i * i][col + i] * moveBoard[row][col] < 0) {
         moves.emplace_back(row + i * i, col + i);
       }
     }
   } // else black
   else {
-    if ((moveBoard)[row - 1][col] == 0) {
+    if (moveBoard[row - 1][col] == 0) {
       moves.emplace_back(row - 1, col);
-      if (row == 6 && (moveBoard)[row - 2][col] == 0) {
+      if (row == 6 && moveBoard[row - 2][col] == 0) {
         moves.emplace_back(row - 2, col);
       }
     }
     for (int i = -1; i < 2; i += 2) {
-      if ((moveBoard)[row - i * i][col - i] * (moveBoard)[row][col] < 0) {
+      if (moveBoard[row - i * i][col - i] * moveBoard[row][col] < 0) {
         moves.emplace_back(row - i * i, col - i);
       }
     }
@@ -385,14 +385,14 @@ void Rules::KnightMoves(const array<array<int, 8>, 8> &moveBoard,
   for (pair<int, int> x : perms) {
     int newRow = row + x.first;
     int newCol = col + x.second;
-    if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+    if (newRow < 0 || newRow > 7 || (newCol < 0 || newCol > 7))
       continue;
     else {
-      if ((moveBoard)[newRow][newCol] == 0) {
+      if (moveBoard[newRow][newCol] == 0) {
         moves.emplace_back(newRow, newCol);
       }
       // use fact that same colour will times to positive
-      else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0)) {
+      else if (moveBoard[row][col] * moveBoard[newRow][newCol] < 0) {
         moves.emplace_back(newRow, newCol);
       } else
         continue;
@@ -422,14 +422,14 @@ void Rules::KingMoves(const array<array<int, 8>, 8> &moveBoard,
     for (int j = -1; j < 2; j++) {
       int newRow = row + i;
       int newCol = col + j;
-      if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7))
+      if (newRow < 0 || newRow > 7 || (newCol < 0 || newCol > 7))
         continue;
       else {
-        if ((moveBoard)[newRow][newCol] == 0) {
+        if (moveBoard[newRow][newCol] == 0) {
           moves.emplace_back(newRow, newCol);
         }
         // use fact that same colour will times to positive
-        else if (((moveBoard)[row][col] * (moveBoard)[newRow][newCol] < 0)) {
+        else if (moveBoard[row][col] * moveBoard[newRow][newCol] < 0) {
           moves.emplace_back(newRow, newCol);
         } else
           continue;
@@ -443,13 +443,13 @@ void Rules::DiagonalMoves(const array<array<int, 8>, 8> &moveBoard,
   for (int i = -1; i < 2; i += 2) {
     for (int j = -1; j < 2; j += 2) {
       int k = 1;
-      while ((row + k * i >= 0) && (row + k * i < 8) && (col + k * j >= 0) &&
-             (col + k * j < 8)) {
-        if ((moveBoard)[row + i * k][col + j * k] == 0) {
+      while (row + k * i >= 0 && row + k * i < 8 && col + k * j >= 0 &&
+             col + k * j < 8) {
+        if (moveBoard[row + i * k][col + j * k] == 0) {
           moves.emplace_back(row + i * k, col + j * k);
           k++;
-        } else if ((moveBoard)[row + i * k][col + j * k] *
-                       (moveBoard)[row][col] <
+        } else if (moveBoard[row + i * k][col + j * k] *
+                       moveBoard[row][col] <
                    0) {
           moves.emplace_back(row + i * k, col + j * k);
           break;
@@ -464,22 +464,22 @@ void Rules::LateralMoves(const array<array<int, 8>, 8> &moveBoard,
                          vector<pair<int, int>> &moves) {
   for (int i = -1; i < 2; i += 2) {
     int k = 1;
-    while ((col + k * i >= 0) && (col + k * i < 8)) {
-      if ((moveBoard)[row][col + k * i] == 0) {
+    while (col + k * i >= 0 && col + k * i < 8) {
+      if (moveBoard[row][col + k * i] == 0) {
         moves.emplace_back(row, col + k * i);
         k++;
-      } else if ((moveBoard)[row][col] * (moveBoard)[row][col + k * i] < 0) {
+      } else if (moveBoard[row][col] * moveBoard[row][col + k * i] < 0) {
         moves.emplace_back(row, col + k * i);
         break;
       } else
         break;
     }
     k = 1;
-    while ((row + k * i >= 0) && (row + k * i < 8)) {
-      if ((moveBoard)[row + k * i][col] == 0) {
+    while (row + k * i >= 0 && row + k * i < 8) {
+      if (moveBoard[row + k * i][col] == 0) {
         moves.emplace_back(row + k * i, col);
         k++;
-      } else if ((moveBoard)[row][col] * (moveBoard)[row + k * i][col] < 0) {
+      } else if (moveBoard[row][col] * moveBoard[row + k * i][col] < 0) {
         moves.emplace_back(row + k * i, col);
         break;
       } else

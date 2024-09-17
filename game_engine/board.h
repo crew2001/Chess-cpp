@@ -16,11 +16,11 @@ class Board {
     static inline pair<int,int> blackKing = {7,3};
     static inline int blackKingMoves =0;
 public:
-    Board() {};
+    Board() = default;
 
-    ~Board() {};
+    ~Board() = default;
 
-    array<array<int, 8>, 8> getBoard() { return board; };
+    static array<array<int, 8>, 8> getBoard() { return board; };
     // static void GetKingMoves(int signKing){
     //     return 
     // }
