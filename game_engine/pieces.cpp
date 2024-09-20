@@ -3,8 +3,7 @@
 vector<sf::Texture> Pieces::loadTextures()
 {
     vector<sf::Texture> texs;
-    vector<string> ts = {"wp", "wn", "wb", "wr", "wq", "wk", "bp", "bn", "bb", "br", "bq", "bk"};
-    for (string c : ts)
+    for (vector<string> ts = {"wp", "wn", "wb", "wr", "wq", "wk", "bp", "bn", "bb", "br", "bq", "bk"}; string c : ts)
     {
         string filename = "../game_engine/images/" + c + ".png";
         sf::Texture tex;
