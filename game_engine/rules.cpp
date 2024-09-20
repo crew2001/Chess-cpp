@@ -336,7 +336,6 @@ bool Rules::CheckKnights(const array<array<int, 8>, 8> &currBoard, int kingSign,
 bool Rules::CanMove(pair<int, int> start, pair<int, int> end) {
   int temp = Board::board[start.first][start.second];
   int pieceSign = temp < 0 ? -1 : 1;
-  int taken = Board::board[end.first][end.second];
   array<array<int, 8>, 8> saveBoard = Board::board;
   pair<int,int> kingcopy = pieceSign<0 ? Board::findKing(-1) : Board::findKing(1);
   Board::SimMove(saveBoard,start, end,kingcopy);

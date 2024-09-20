@@ -152,10 +152,10 @@ void Game::DrawPieces() {
 void Game::ShowMoves() {
   for (auto x : canMove) {
     if (Rules::CanMove(firstClick, x)) {
-      float ypos = (float)x.first * 1000.f / 8.f +
-                   (float)0.85 * (1000.f / 16.f);
-      float xpos = (float)x.second * 1000.f / 8.f +
-                   (float)0.85 * (1000.f / 16.f);
+      float ypos = static_cast<float>(x.first) * 1000.f / 8.f +
+                   static_cast<float>(0.85) * (1000.f / 16.f);
+      float xpos = static_cast<float>(x.second) * 1000.f / 8.f +
+                   static_cast<float>(0.85) * (1000.f / 16.f);
       sf::CircleShape move(10.f);
       move.setFillColor(sf::Color::Cyan);
       move.setPosition(xpos, ypos);
@@ -171,20 +171,20 @@ void Game::ShowMoves() {
 void Game::DrawCheckNotification() {
   // IF WHITE KING CHECK THEN DRAW RED CIRCLE ONTO WHITE KING
   if (Rules::KingCheck(1, Board::board)) {
-    float ypos = (float)Board::findKing(1).first * 1000.f / 8.f +
-                 (float)0.85 * (1000.f / 16.f);
-    float xpos = (float)Board::findKing(1).second * 1000.f / 8.f +
-                 (float)0.85 * (1000.f / 16.f);
+    float ypos = static_cast<float>(Board::findKing(1).first) * 1000.f / 8.f +
+                 static_cast<float>(0.85) * (1000.f / 16.f);
+    float xpos = static_cast<float>(Board::findKing(1).second) * 1000.f / 8.f +
+                 static_cast<float>(0.85) * (1000.f / 16.f);
     sf::CircleShape checkSymbol(10.f);
     checkSymbol.setFillColor(sf::Color::Red);
     checkSymbol.setPosition(xpos, ypos);
     Draw(checkSymbol);
   }
   if (Rules::KingCheck(-1, Board::board)) {
-    float ypos = (float)Board::findKing(-1).first * 1000.f / 8.f +
-                 (float)0.85 * (1000.f / 16.f);
-    float xpos = (float)Board::findKing(-1).second * 1000.f / 8.f +
-                 (float)0.85 * (1000.f / 16.f);
+    float ypos = static_cast<float>(Board::findKing(-1).first) * 1000.f / 8.f +
+                 static_cast<float>(0.85) * (1000.f / 16.f);
+    float xpos = static_cast<float>(Board::findKing(-1).second) * 1000.f / 8.f +
+                 static_cast<float>(0.85) * (1000.f / 16.f);
     sf::CircleShape checkSymbol(10.f);
     checkSymbol.setFillColor(sf::Color::Red);
     checkSymbol.setPosition(xpos, ypos);

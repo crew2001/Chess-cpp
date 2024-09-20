@@ -59,7 +59,7 @@ void Board::makeMove(pair<int, int> start, pair<int, int> end) {
 
 }
 
-void Board::moveKing(int kingSign, pair<int, int> newPosition) {
+void Board::moveKing(int kingSign, const pair<int, int>&newPosition) {
     if (kingSign<0){
         blackKing = newPosition;
     }
@@ -77,7 +77,7 @@ pair<int,int> Board::findKing(int kingSign){
     }
 }
 
-void Board::UndoMove(pair<int, int> newPosition, pair<int, int> oldPosition, int takenPiece) {
+void Board::UndoMove(const pair<int, int>&newPosition, const pair<int, int>&oldPosition, int takenPiece) {
     int temp = board[newPosition.first][newPosition.second];
     // * HAVE TO UNDO THE SPECIAL MOVES THAT WERE SIMULATED/CHECKED IN RULES
     // * FIRST IS IF THE CHECKED MOVE WAS A KING, IF SO HAVE TO GIVE BACK CASTLING RIGHTS
@@ -110,7 +110,7 @@ void Board::UndoMove(pair<int, int> newPosition, pair<int, int> oldPosition, int
     board[oldPosition.first][oldPosition.second] = temp;
 }
 
-void Board::SimMove(array<array<int,8>,8>& simBoard, pair<int,int> start,pair<int,int> end, pair<int,int>& kingcopy){
+void Board::SimMove(array<array<int,8>,8>& simBoard, const pair<int,int>&start, const pair<int,int>&end, pair<int,int>& kingcopy){
     int temp = simBoard[start.first][start.second];
     if(abs(temp)==6){
         kingcopy=end;

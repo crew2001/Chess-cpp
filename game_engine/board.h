@@ -30,7 +30,7 @@ public:
 
     static void makeMove(pair<int,int> start, pair<int,int> end);
     static pair<int,int> findKing(int kingSign);
-    static void moveKing(int kingSign,pair<int,int> newPosition);
+    static void moveKing(int kingSign, const const const pair<int,int>& & &newPosition);
     // static inline array<array<int, 8>, 8> board = {
     //         {{4, 0,0, 6,0,0,0, 4}, {1, 1, 5, 1, -1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, -1, 0},
     //          {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
@@ -39,7 +39,7 @@ public:
            {{4, 2, 3, 6,5, 3, 2, 4}, {1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {-1, -1, -1, -1, -1, -1, -1, -1},
             {-4, -2, -3, -6, -5, -3, -2, -4}}};
-    static void UndoMove(pair<int,int> newPosition, pair<int,int> oldPosition, int taken);
+    static void UndoMove(const const const pair<int,int>& & &newPosition, const const const pair<int,int>& & &oldPosition, int taken);
     
     // * ADDING LAST MOVE TRACKING
     static inline vector<pair<int,int>> lastMoveBeforeAndAfter;
@@ -50,5 +50,5 @@ public:
     static inline bool whiteCastle = true;
 
     // TODO: Write a function to handle the castling rights properly
-    static void SimMove(array<array<int,8>,8>& simBoard, pair<int,int> start,pair<int,int> end, pair<int,int>& kingcopy);
+    static void SimMove(array<array<int,8>,8>& simBoard, const const const pair<int,int>& & &start, const const const pair<int,int>& & &end, pair<int,int>& kingcopy);
 };
